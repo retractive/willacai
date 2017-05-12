@@ -1,69 +1,750 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+<head>
+    <title>Red Page: Creative Responsive One Page Template</title>
     <meta charset="utf-8">
-    <title>Welcome to Firebase Hosting</title>
-    <style media="screen">
-      body {
-        font-family: Roboto, Arial, sans-serif;
-        background: #ECEFF1;
-        color: rgba(0,0,0,0.87);
-      }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/style.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+	 <script type="text/javascript" src="js/jquery.responsivemenu.js"></script>
+	<script src="js/jquery.scrollTo.js"></script>
+	<script src="js/jquery.nav.js"></script>
+	 <script type="text/javascript" src="js/jquery.flexslider.js"></script>
+   <script src="js/jquery.scrollTo-1.4.3.1.min.js"></script>
+   <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+   <script type="text/javascript" src="js/cufon-yui.js"></script>
+   <script type="text/javascript" src="js/ChunkFive_400.font.js"></script>
+   <script type="text/javascript" src="js/cufon-replace.js"></script>
+   <script type="text/javascript" src="js/FF-cash.js"></script>
+	 <script src="js/jquery.isotope.min.js"></script>
+	 <script type="text/javascript" src="js/forms.js"></script>
+   <script src="js/touchTouch.jquery.js"></script>
+	 <script src="js/script.js"></script>
+	 <script type="text/javascript">
+		  $(function(){
+				//<====== filters
+          // cache container
+          var $container = $('#container');
+          // initialize isotope
+          $container.isotope({
+             
+          });
+          // filter items when filter link is clicked
+          $('#filter li a').click(function(){
+            var selector = $(this).attr('data-filter');
+            $container.isotope({ filter: selector });
+            return false;
+          });
+          var $optionSets = $('.option-set'),
+          $optionLinks = $optionSets.find('a');
 
-      a {
-        color: rgb(3,155,229);
-      }
+          $optionLinks.click(function(){
+            var $this = $(this);
+            // don't proceed if already selected
+            if ( $this.hasClass('selected') ) {
+              return false;
+            }
+            var $optionSet  = $this.parents('.option-set');
+            $optionSet.find('.selected').removeClass('selected');
+            $this.addClass('selected');
+      
+            // make option object dynamically, i.e. { filter: '.my-filter-class' }
+            var options = {},
+                key = $optionSet.attr('data-option-key'),
+                value = $this.attr('data-option-value');
+            // parse 'false' as false boolean
+            value = value === 'false' ? false : value;
+            options[ key ] = value;
+            if ( key === 'layoutMode' && typeof changeLayoutMode === 'function' ) {
+              // changes in layout modes need extra logic
+              changeLayoutMode( $this, options )
+            } else {
+              // otherwise, apply new options
+              $container.isotope( options );
+            }
+            
+            return false;
+          });
+					$(window).smartresize(function(){
+						$container.isotope();
+					});
+			})
+			$(document).ready(function(){
+				$('.flexslider').flexslider({
+				  animation: "slide"
+				});
+				$('.img_container, .touch').touchTouch();
+			 });
+			$(window).load(function(){
+				$('.sf-menu').onePageNav({
+					begin: function() {
+					console.log('start');
+					},
+					end: function() {
+					console.log('stop');
+					},
+				scrollOffset: 30
+				});
+				$('.main-menu').prepend('<div id="menu-icon"></div>');
+				$("#menu-icon").on("click", function(){
+					$(".sf-menu").slideToggle();
+					$(this).toggleClass("active");
+				});
+			})
+	 </script>
+	<!--[if lt IE 8]>
+   <div style=' clear: both; text-align:center; position: relative;'>
+     <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+       <img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." />
+    </a>
+  </div>
+<![endif]-->
+    <!--[if lt IE 9]>
+   	<script type="text/javascript" src="js/html5.js"></script>
+    	<link rel="stylesheet" type="text/css" media="screen" href="css/ie.css">
+    <![endif]-->
+</head>
+<body>
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+    // init the FB JS SDK
+    FB.init({
+      appId      : 'YOUR_APP_ID', // App ID from the App Dashboard
+      channelUrl : '//WWW.YOUR_DOMAIN.COM/js/channel.html', // Channel File for x-domain communication
+      status     : true, // check the login status upon init?
+      cookie     : true, // set sessions cookies to allow your server to access the session?
+      xfbml      : true  // parse XFBML tags on this page?
+    });
 
-      #message {
-        max-width: 400px;
-        margin: 40px auto;
-        box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2),0 1px 1px 0 rgba(0,0,0,0.14),0 2px 1px -1px rgba(0,0,0,0.12);
-        border-radius: 2px;
-        background: white;
-        padding: 16px 24px;
-      }
+    // Additional initialization code such as adding Event Listeners goes here
 
-      #message h1 {
-        font-size: 22px;
-        font-weight: 500;
-        text-align: center;
-        margin: 0 0 16px;
-      }
+  };
 
-      #message p {
-        font-weight: 300;
-        line-height: 150%;
-      }
+  // Load the SDK's source Asynchronously
+  // Note that the debug version is being actively developed and might 
+  // contain some type checks that are overly strict. 
+  // Please report such bugs using the bugs tool.
+  (function(d, debug){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document, /*debug*/ false));
+</script>
 
-      #message ul {
-        list-style: none;
-        margin: 16px 0 0;
-        padding: 0;
-        text-align: center;
-      }
-
-      #message li a {
-        display: inline-block;
-        padding: 8px;
-        text-transform: uppercase;
-        text-decoration: none;
-        font-weight: 500;
-        background: rgb(3,155,229);
-        color: white;
-        border: 1px solid rgb(3,155,229);
-        border-radius: 3px;
-        font-size: 14px;
-        box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h1>Welcome to Firebase Hosting</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <ul>
-        <li><a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a></li>
+<!--==============================header=================================-->
+   	<header>
+	    <div class="inner">
+        <div class="main">
+            <h1><a class="logo" href="index.html">RedPage</a></h1>
+            <nav class="main-menu">
+                <ul class="sf-menu">
+                  <li class="current"><a href="#home">Home</a></li>
+                  <li><a href="#services">Services</a></li>
+                  <li><a href="#blog">Blog</a></li>
+                  <li><a href="#portfolio">Portfolio</a></li>
+									<li><a href="#our_team">Our Team</a></li>
+                  <li><a href="#get_in_touch">Get in Touch</a></li>
+               </ul>
+               <div class="clear"></div>
+            </nav>
+            <div class="clear"></div>
+        </div>
+      </div>
+    </header>
+<!--==============================content================================-->
+    <section id="content">
+    	<ul id="pages">
+        <!-- Home page -->
+        <li id="home" class="slide">
+          <div class="inner">
+            <div class="flexslider">
+              <ul class="slides">
+                <li>
+                  <img src="images/slide.jpg" alt="">
+                  <div class="banner">
+                    <div class="inner">
+                      <div class="title">
+                        <strong class="title1">Welcome Page</strong><br>
+                        <strong class="title2">An Awesome One Page Portfolio</strong>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <img src="images/slide.jpg" alt="">
+                  <div class="banner">
+                    <div class="inner">
+                      <div class="title">
+                        <strong class="title1">Welcome Page</strong><br>
+                        <strong class="title2">An Awesome One Page Portfolio</strong>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <img src="images/slide.jpg" alt="">
+                  <div class="banner">
+                    <div class="inner">
+                      <div class="title">
+                        <strong class="title1">Welcome Page</strong><br>
+                        <strong class="title2">An Awesome One Page Portfolio</strong>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <!-- home page end -->
+        <!-- Services page -->
+        <li id="services" class="slide">
+          <div class="inner">
+            <div class="main">
+              <div class="box1">
+                <h2>Look at This Awesome One Page Wordpress Theme</h2>
+                Lorem ipsum dolor sit amet, consect etuer adip iscing elit, sed diam non ummy nibh euismod tinci dunt olore magna am ipsum dolor sit amet, consect etuer adip iscing elit, sed diam non ummy nibh euismod tinci dunt olore magna
+              </div>
+              <div class="wrapper bot_ind">
+                <div class="service service1">
+                  <a href="#" class="inner bot_stripe">
+                    <span class="img_wrap"><img src="images/service1.png" alt=""></span>
+                    <strong class="h3">Free Support</strong>
+                    <span class="text">
+                      Lorem ipsum dolor sit amet, consect etuer adip iscing elit, sed diam non ummy nibh euismod tinci dunt olore magna ali
+                    </span>
+                  </a>
+                </div>
+                <div class="service service2">
+                  <a href="#" class="inner bot_stripe">
+                    <span class="img_wrap"><img src="images/service2.png" alt=""></span>
+                    <strong class="h3">Easy to Edit</strong>
+                    <span class="text">
+                      Amet, consectetuer adipi scing elit, sed diam nonummy nibh eu ismod tincidunt ut laoreet dolore magna ali quam erat volutpat.
+                    </span>
+                  </a>
+                </div>
+                <div class="service service3">
+                  <a href="#" class="inner bot_stripe">
+                    <span class="img_wrap"><img src="images/service3.png" alt=""></span>
+                    <strong class="h3">Fully Responsive</strong>
+                    <span class="text">
+                      Lorem dolor sit a sit amet, consecte tuer adipiscing elit, sed diam my nibh euis mod tincidunt ut larat volutpat
+                    </span>
+                  </a>
+                </div>
+              </div>
+              <div class="wrapper">
+                <div class="service service1">
+                  <a href="#" class="inner bot_stripe">
+                    <span class="img_wrap"><img src="images/service4.png" alt=""></span>
+                    <strong class="h3">Get in Touch</strong>
+                    <span class="text">
+                      Lorem ipsum dolor sit amet, consect etuer adip iscing elit, sed diam non ummy nibh euismod tinci dunt olore magna ali
+                    </span>
+                  </a>
+                </div>
+                <div class="service service2">
+                  <a href="#" class="inner bot_stripe">
+                    <span class="img_wrap"><img src="images/service5.png" alt=""></span>
+                    <strong class="h3">Modern Design</strong>
+                    <span class="text">
+                      Amet, consectetuer adipi scing elit, sed diam nonummy nibh eu ismod tincidunt ut laoreet dolore magna ali quam erat volutpat.
+                    </span>
+                  </a>
+                </div>
+                <div class="service service3">
+                  <a href="#" class="inner bot_stripe">
+                    <span class="img_wrap"><img src="images/service6.png" alt=""></span>
+                    <strong class="h3">Checked!</strong>
+                    <span class="text">
+                      Lorem dolor sit a sit amet, consecte tuer adip iscing elit, sed diam my nibh euis mod tinci dunt ut larat volutpat
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <!-- services page end -->
+        
+				<!-- Blog Page -->
+        <li id="blog" class="slide">
+          <div class="inner">
+            <div class="main">
+              <div class="wrapper">
+                <div class="col1 col">
+                  <ul class="ext_list blog_list">
+                    <li>
+                      <figure>
+                        <time datetime="2012-11-10">
+                          <span>nov</span>10
+                        </time><a href="#">17</a>
+                      </figure>
+                      <div>
+											<figure><img src="images/blog1.png" alt=""></figure>
+											<div class="pad_box">
+													<h4><a href="#">Lorem ipsum dolor sit amet, consec tetuer</a></h4>
+													<div class="posted_by">
+														Posted by <a href="#">Admin</a> in <a href="#">Blog,</a> <a href="#">Design,</a> <a href="#">News,</a> Tagged with <a href="#">Design,</a> <a href="#">Photography</a>
+													</div>
+													<p>Amet, consectetuer adipi scing elit, sed diam nonummy nibh eu ismod tincidunt ut laoreet dolore magna ali quam erat volutet, consectetuer adipi scing elit, sed diam nonummy nibh eu ismod tincidunt ut laoreet dolore magna ali quam erat volutpat...</p>
+													<a href="#" class="link1">Continue reading...</a>
+												</div>
+                      </div>
+                    </li>
+                    <li class="last">
+                      <figure>
+                        <time datetime="2012-11-24">
+                          <span>nov</span>12
+                        </time><a href="#">24</a>
+                      </figure>
+                      <div>
+											<figure><img src="images/blog2.png" alt=""></figure>
+											<div class="pad_box">
+													<h4><a href="#">Lorem ipsum dolor sit amet, consec tetuer</a></h4>
+													<div class="posted_by">
+														Posted by <a href="#">Admin</a> in <a href="#">Blog,</a> <a href="#">Design,</a> <a href="#">News,</a> Tagged with <a href="#">Design,</a> <a href="#">Photography</a>
+													</div>
+													<p>Amet, consectetuer adipi scing elit, sed diam nonummy nibh eu ismod tincidunt ut laoreet dolore magna ali quam erat volutet, consectetuer adipi scing elit, sed diam nonummy nibh eu ismod tincidunt ut laoreet dolore magna ali quam erat volutpat...</p>
+													<a href="#" class="link1">Continue reading...</a>
+												</div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col2 col">
+                  <form id="search">
+                    <input type="text" value="Search" onBlur="if(this.value=='') this.value='Search'" onFocus="if(this.value =='Search' ) this.value=''">
+                    <a href="#"></a>
+                  </form>
+                  <h5 class="ind">Recent Posts</h5>
+                  <ul class="ext_list posts">
+                    <li>
+                      <figure><img src="images/post1.png" alt="post1" /></figure>
+                      <div>
+                        <time datetime="2012-11-12">November 12, 2012</time>
+                        <a href="#">Lorem ipsum dolor sit 
+                          amet consec tetuer</a>
+                      </div>
+                    </li>
+                    <li>
+                      <figure><img src="images/post2.png" alt="post1" /></figure>
+                      <div class="p_top1">
+                        <time datetime="2012-11-12">November 12, 2012</time>
+                        <a href="#">Lorem ipsum dolor sit am</a>
+                      </div>
+                    </li>
+                    <li>
+                      <div>
+                        <time datetime="2012-11-12">November 12, 2012</time>
+                        <a href="#">Consectetuer adipi scing elit</a>
+                      </div>
+                    </li>
+                    <li>
+                      <figure><img src="images/post3.png" alt="post1" /></figure>
+                      <div>
+                        <time datetime="2012-11-12">November 12, 2012</time>
+                        <a href="#">Lorem ipsum dolor sit 
+amet consec tetuer</a>
+                      </div>
+                    </li>
+                    <li class="last">
+                      <div>
+                        <time datetime="2012-11-12">November 12, 2012</time>
+                        <a href="#">Lorem ipsum dolor sit am</a>
+                      </div>
+                    </li>
+                  </ul>
+                  <h5>Recent Comments</h5>
+                  <ul class="comments">
+                    <li>James on <a href="#">Lorem ipsum dolor sit 
+                        amet consec tetuer</a></li>
+                    <li>Admin on <a href="#">Dolor sit amet consec</a></li>
+                    <li>Sarah on <a href="#">Dolor Ipsum sed ur per sit amet consec</a></li>
+                    <li>Admin on <a href="#">Dolor sit amet consec</a></li>
+                    <li class="last">James on <a href="#">Lorem ipsum dolor sit 
+                        amet consec tetuer</a></li>
+                  </ul>
+                  <h5 class="ind">Archives</h5>
+                  <ul class="archives">
+                    <li><a href="#">June 2012</a></li>
+                    <li><a href="#">July 2012</a></li>
+                    <li><a href="#">August 2012</a></li>
+                    <li><a href="#">September 2012</a></li>
+                    <li><a href="#">October 2012</a></li>
+                    <li class="last"><a href="#">November 2012 </a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <!-- blog page end -->
+				
+				<!-- portfolio page -->
+        <li id="portfolio" class="slide">
+          <div class="inner">
+            <div class="main">
+              <h2 class="h2">Portfolio Page</h2>
+              <div class="filter_box">
+                 <ul id="filter" class="option-set" data-option-key="filter">
+                    <li><a href="#" data-filter="*" class="selected">All</a></li>
+                    <li><a href="#" data-filter=".design">Design</a></li>
+                    <li><a href="#" data-filter=".photography">Photography</a></li>
+                    <li><a href="#" data-filter=".art">Art</a></li>
+                    <li><a href="#" data-filter=".illustration">Illustration</a></li> 
+                </ul>
+                <div id="container" class="portfolio">
+                  <div class="element design">
+                    <a href="images/big_images/big1.jpg" class="img_container">
+                      <figure>
+                        <img src="images/portfolio1.png" alt="">
+                        <span class="description">
+                          <span class="inner">
+                            Amet, con secte tuer adipi scing elit, sed diam non ummy nibh eu ismod tincid unt ut lao reet dolore magna volutpat...
+                          </span>
+                        </span>
+                      </figure>
+                    </a>
+										<a href="#" class="text">
+                        Amet, consectetuer adipi
+                    </a>
+                  </div>
+                  <div class="element photography">
+                    <a href="images/big_images/big2.jpg" class="img_container">
+                      <figure>
+                        <img src="images/portfolio2.png" alt="">
+                        <span class="description">
+                          <span class="inner">
+                            Amet, con secte tuer adipi scing elit, sed diam non ummy nibh eu ismod tincid unt ut lao reet dolore magna volutpat...
+                          </span>
+                        </span>
+                      </figure>
+										</a>
+										<a href="#" class="text">
+											Consectetuer adipi scing elit
+										</a>
+                  </div>
+                  <div class="element art">
+                    <a href="images/big_images/big3.jpg" class="img_container">
+                      <figure>
+                        <img src="images/portfolio3.png" alt="">
+                        <span class="description">
+                          <span class="inner">
+                            Amet, con secte tuer adipi scing elit, sed diam non ummy nibh eu ismod tincid unt ut lao reet dolore magna volutpat...
+                          </span>
+                        </span>
+                      </figure>
+                    </a>
+										<a href="#" class="text">
+											Adipi scing elit sed diam
+										</a>
+                  </div>
+                  <div class="element illustration">
+                    <a href="images/big_images/big4.jpg" class="img_container">
+                      <figure>
+                        <img src="images/portfolio4.png" alt="">
+                        <span class="description">
+                          <span class="inner">
+                            Amet, con secte tuer adipi scing elit, sed diam non ummy nibh eu ismod tincid unt ut lao reet dolore magna volutpat...
+                          </span>
+                        </span>
+                      </figure>
+                    </a>
+										<a href="#" class="text">
+											Scing elit sed diam nonummy
+										</a>
+                  </div>
+                  <div class="element design">
+                    <a href="images/big_images/big5.jpg" class="img_container">
+                      <figure>
+                        <img src="images/portfolio5.png" alt="">
+                        <span class="description">
+                          <span class="inner">
+                            Amet, con secte tuer adipi scing elit, sed diam non ummy nibh eu ismod tincid unt ut lao reet dolore magna volutpat...
+                          </span>
+                        </span>
+                      </figure>
+                    </a>
+										<a href="#" class="text">
+											Amet, consectetuer adipi
+										</a>
+                  </div>
+                  <div class="element photography">
+                    <a href="images/big_images/big6.jpg" class="img_container">
+                      <figure>
+                        <img src="images/portfolio6.png" alt="">
+                        <span class="description">
+                          <span class="inner">
+                            Amet, con secte tuer adipi scing elit, sed diam non ummy nibh eu ismod tincid unt ut lao reet dolore magna volutpat...
+                          </span>
+                        </span>
+                      </figure>
+                    </a>
+										<a href="#" class="text">
+											Consectetuer adipi scing elit
+										</a>
+                  </div>
+                  <div class="element art">
+                    <a href="images/big_images/big7.jpg" class="img_container">
+                      <figure>
+                        <img src="images/portfolio7.png" alt="">
+                        <span class="description">
+                          <span class="inner">
+                            Amet, con secte tuer adipi scing elit, sed diam non ummy nibh eu ismod tincid unt ut lao reet dolore magna volutpat...
+                          </span>
+                        </span>
+                      </figure>
+                    </a>
+										<a href="#" class="text">
+											Adipi scing elit sed diam
+										</a>
+                  </div>
+                  <div class="element illustration">
+                    <a href="images/big_images/big8.jpg" class="img_container">
+                      <figure>
+                        <img src="images/portfolio8.png" alt="">
+                        <span class="description">
+                          <span class="inner">
+                            Amet, con secte tuer adipi scing elit, sed diam non ummy nibh eu ismod tincid unt ut lao reet dolore magna volutpat...
+                          </span>
+                        </span>
+                      </figure>
+                    </a>
+										<a href="#" class="text">
+											Scing elit sed diam nonummy
+										</a>
+                  </div>
+                  <div class="element illustration">
+                    <a href="images/big_images/big9.jpg" class="img_container">
+                      <figure>
+                        <img src="images/portfolio9.png" alt="">
+                        <span class="description">
+                          <span class="inner">
+                            Amet, con secte tuer adipi scing elit, sed diam non ummy nibh eu ismod tincid unt ut lao reet dolore magna volutpat...
+                          </span>
+                        </span>
+                      </figure>
+                    </a>
+										<a href="#" class="text">
+											Scing elit sed diam nonummy
+										</a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio_box">
+                <h2 class="h2 ind">Adipi scing elit sed diam</h2>
+                <ul class="tags">
+                  <li><a href="#">Photography</a></li>
+                  <li><a href="#">Art</a></li>
+                  <li><a href="#">Illustration</a></li>
+                </ul>
+                <div class="ext_box1 info_box">
+                  <div>
+                    <div class="posted_by">Posted by <a href="#">Admin</a> in <a href="">Blog,</a> <a href="#">Design,</a> <a href="#">News</a></div>
+                    <p class="p2">Amet, consectetuer adipi scing elit, sed diam nonu mmy nibh eu ismod tincidunt ut laoreet dolo re magna ali quam erat volutet, consecte tuer adipi scing elit, sed diam nagna ali quam erat volutet, consecte tuer adipi scing elit, sed diam nagna ali quam erat volutet, consecte tuer adipi scing elit, sed diam nonu mmy nibh ismod tinci dunt ut laoreet dolore magna ali quam erat volutpat...</p>
+                    <h5>Additional Information:</h5>
+                    <dl class="add_info gray">
+                      <dd>Date: <strong>April 12, 2012</strong></dd>
+                      <dd>Client: <strong>John Doe, Company Inc.</strong></dd>
+                      <dd>Price: <strong>$200</strong></dd>
+                    </dl>
+                    <a href="#" class="button">Launch Website</a>
+                  </div>
+                  <figure>
+                    <img src="images/info_box.png" alt="info_box" />
+										<div class="social_plugins">
+											<!-- Place this tag where you want the +1 button to render. -->
+											<div class="g-plusone" data-size="small"></div>
+											
+											<!-- Place this tag after the last +1 button tag. -->
+											<script type="text/javascript">
+												(function() {
+													var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+													po.src = 'https://apis.google.com/js/plusone.js';
+													var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+												})();
+											</script>
+											<div class="twitter_but">
+												<a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+												<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+											</div>
+											<div class="fb-like" data-send="false" data-layout="button_count" data-width="120" data-show-faces="true"></div>
+										</div>
+									</figure>
+                </div>
+                <div class="wrapper">
+                  <div class="portfolio1">
+                    <a  href="images/big_images/big7.jpg" class="touch">
+                      <figure><img src="images/portfolio1_1.png" alt=""></figure>
+                    </a>
+										<a href="#" class="text">Consectetuer adipi scing elit</a>
+                  </div>
+                  <div class="portfolio1 m_left">
+                    <a  href="images/big_images/big8.jpg" class="touch">
+                      <figure><img src="images/portfolio1_2.png" alt=""></figure>
+                    </a>
+										<a href="#" class="text">Adipi scing elit sed diam</a>
+                  </div>
+                  <div class="portfolio1 m_left">
+                    <a  href="images/big_images/big9.jpg" class="touch">
+                      <figure><img src="images/portfolio1_3.png" alt=""></figure>
+                    </a>
+										<a href="#" class="text">Scing elit sed diam nonummy</a>
+                  </div>
+                </div>
+              </div>
+						</div>
+          </div>
+        </li>
+        <!-- portfolio page end -->
+				
+				<!-- team page -->
+				<li id="our_team" class="slide">
+					<div class="inner">
+						<div class="main">
+							<div class="box1 m_bot1">
+								<h2>Get Acquainted with Our Team</h2>
+								Lorem ipsum dolor sit amet, consect etuer adip iscing elit, sed diam non ummy nibh euismod tinci dunt olore magna am ipsum dolor sit amet, consect etuer adip iscing elit, sed diam non ummy nibh euismod tinci dunt olore magna
+							</div>
+							<div class="wrapper team_box">
+								<div class="team">
+									<figure><img src="images/team1.png" alt=""></figure>
+									<div class="text">
+										<h3>Chris Doe</h3>
+										Lorem ipsum <strong>Developer</strong> dolor sit amet, con- sect etuer adip iscing elit, sed diam non ummy nibh euismod tinci dunt olore magna
+									</div>
+									<div class="social_box">
+										<a href="#" title="devianART"><img src="images/soc1.png" alt=""></a>
+										<a href="#" title="Twitter"><img src="images/soc2.png" alt=""></a>
+										<a href="#" title="Facebook"><img src="images/soc3.png" alt=""></a>
+										<a href="#" title="Skype"><img src="images/soc4.png" alt=""></a>
+										<a href="#" title="email"><img src="images/soc5.png" alt=""></a>
+									</div>
+								</div>
+								<div class="team">
+									<figure><img src="images/team2.png" alt=""></figure>
+									<div class="text">
+										<h3>Peter Smith</h3>
+										Amet, <strong>Designer</strong> consectetuer adipi scing elit, sed diam nonummy nibh eu ismod tincidunt ut laoreet dolorem erat volutpat.
+									</div>
+									<div class="social_box">
+										<a href="#" title="devianART"><img src="images/soc1.png" alt=""></a>
+										<a href="#" title="Twitter"><img src="images/soc2.png" alt=""></a>
+										<a href="#" title="Facebook"><img src="images/soc3.png" alt=""></a>
+										<a href="#" title="Skype"><img src="images/soc4.png" alt=""></a>
+										<a href="#" title="email"><img src="images/soc5.png" alt=""></a>
+									</div>
+								</div>
+								<div class="team">
+									<figure><img src="images/team3.png" alt=""></figure>
+									<div class="text">
+										<h3>Sarah Brown</h3>
+										Lorem dolor sit a sit amet, consecte tuer adipiscing <strong>Project Manager</strong> elit, sed diam my nibh euis mod tincidunt ut larat volutpat
+									</div>
+									<div class="social_box">
+										<a href="#" title="devianART"><img src="images/soc1.png" alt=""></a>
+										<a href="#" title="Twitter"><img src="images/soc2.png" alt=""></a>
+										<a href="#" title="Facebook"><img src="images/soc3.png" alt=""></a>
+										<a href="#" title="Skype"><img src="images/soc4.png" alt=""></a>
+										<a href="#" title="email"><img src="images/soc5.png" alt=""></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+				<!-- team page end-->
+				
+				<!-- contact page-->
+        <li id="get_in_touch" class="slide">
+          <div class="inner">
+            <div class="main">
+							<div class="box1 m_bot1">
+								<h2>Get in Touch with Us</h2>
+								Lorem ipsum dolor sit amet, consect etuer adip iscing elit, sed diam non ummy nibh euismod tinci dunt olore magna am ipsum dolor sit amet, consect etuer adip iscing elit, sed diam non ummy nibh euismod tinci dunt olore magna
+							</div>
+						</div>
+						<span class="map_wrapper">
+              <iframe id="map_canvas" src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Brooklyn,+New+York,+NY,+United+States&amp;aq=0&amp;sll=37.0625,-95.677068&amp;sspn=61.282355,146.513672&amp;ie=UTF8&amp;hq=&amp;hnear=Brooklyn,+Kings,+New+York&amp;ll=40.649974,-73.950005&amp;spn=0.01628,0.025663&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe>
+            </span>
+						<div class="main">
+							<div class="contact_box wrapper">
+								<form id="contact-form">
+									<div class="row">
+										<label class="name">
+												<input type="text" value="Name">
+											 <span class="error">*This is not a valid name.</span> <span class="empty">*This field is required.</span>
+										</label>
+										<label class="subject notRequired">
+												<input type="text" value="Subject">
+											 <span class="error">*This is not a valid phone number.</span> <span class="empty">*This field is required.</span>
+										</label>
+									</div>
+									<div class="row">
+										<label class="email">
+												<input type="text" value="Email">
+											 <span class="error">*This is not a valid email address.</span> <span class="empty">*This field is required.</span>
+										</label>
+										<label class="url notRequired">
+												<input type="text" value="URL">
+											 <span class="error">*This is not a valid phone number.</span> <span class="empty">*This field is required.</span>
+										</label>
+									</div>
+										
+										<label class="message">
+												<textarea></textarea>
+											 <span class="error">*The message is too short.</span> <span class="empty">*This field is required.</span>
+										</label>
+										<div class="success">Contact form submitted!<br>
+											 <strong>We will be in touch soon.</strong>
+										</div>
+										<div class="buttons2">
+											 <a href="#" data-type="submit" class="button1">Send Message</a>
+											 <a href="#" data-type="reset" class="button1">Clear</a>
+										</div>
+								</form>
+								<div class="info">
+									<h5>Contact Information</h5>
+									<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+									<dl class="contact_info">
+										<dd><span>Address:</span> <strong>Marmora Road, New York, NY</strong></dd>
+										<dd><span>Phone:</span> <strong>+1 (234) 567-89-79</strong></dd>
+										<dd><span>Fax:</span> <strong>+1 (234) 567-89-97</strong></dd>
+										<dd><span>Email:</span> <strong>support@redpagedomain.com</strong></dd>
+									</dl>
+								</div>
+							</div>
+						</div>
+          </div>
+        </li>
+				<!-- contact page end -->
+				
+				<!-- footer page-->
+				<li id="footer" class="slide">
+					<div class="inner">
+						<div class="main">
+							<div class="footer">
+								<div class="privacy">Red Page &copy; 2012 Theme by CrazyPixels</div>
+								<div class="social">
+									<a href="#" title="devianART"><img src="images/soc1-1.png" alt=""></a>
+									<a href="#" title="Twitter"><img src="images/soc1-2.png" alt=""></a>
+									<a href="#" title="Facebook"><img src="images/soc1-3.png" alt=""></a>
+									<a href="#" title="Skype"><img src="images/soc1-4.png" alt=""></a>
+									<a href="#" title="Email"><img src="images/soc1-5.png" alt=""></a>
+								</div>	
+							</div>
+						</div>
+					</div>
+				</li>
+        <!-- footer page end -->
       </ul>
-    </div>
-  </body>
+    </section>
+</body>
 </html>
